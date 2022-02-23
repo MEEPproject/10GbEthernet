@@ -22,14 +22,13 @@ set files [list \
   [file normalize "${g_root_dir}/src/verilog-ethernet/rtl/lfsr.v"] \
   [file normalize "${g_root_dir}/src/ethernet.v"] \
 ]
-add_files -norecurse -fileset $source_fileset $files
+add_files $files
 
 set files [list \
   [file normalize ${g_root_dir}/src/verilog-ethernet/lib/axis/syn/vivado/sync_reset.tcl] \
   [file normalize ${g_root_dir}/src/verilog-ethernet/lib/axis/syn/vivado/axis_async_fifo.tcl] \
   [file normalize ${g_root_dir}/src/verilog-ethernet/syn/vivado/eth_mac_fifo.tcl] \
 ]
-add_files -norecurse -fileset $constraint_fileset $files
 
 # QSFP Port 0
 

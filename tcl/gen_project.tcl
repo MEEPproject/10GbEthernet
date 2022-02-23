@@ -20,6 +20,9 @@ if { $::argc > 0 } {
 
 }
 
+file delete -force $projec_dir
+
+
 set root_dir $g_root_dir
 
 ################################################################
@@ -39,8 +42,8 @@ variable design_name
 set design_name $g_project_name
 set ip_dir_list [list \
      $root_dir/ip]
+	 
 	
-
 set_property  ip_repo_paths  $ip_dir_list [current_project]
 
 if { $g_useBlockDesign eq "Y" } {
@@ -61,10 +64,11 @@ save_bd_design
 ####################################################
 set g_top_name ${g_project_name}_top
 
-set top_module "$root_dir/src/${g_top_name}.vhd"
+set top_module "$root_dir/src/${g_top_name}.$g_rtl_ext"
 set src_files [glob ${root_dir}/src/*]
 set ip_files [glob -nocomplain ${root_dir}/ip/*/*.xci]
 add_files ${src_files}
+#add_files $top_module
 add_files -quiet ${ip_files}
 
 # Add Constraint files to project
