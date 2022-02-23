@@ -23,7 +23,7 @@ THE SOFTWARE.
 
 */
 
-module ethernet_u280 #(
+module ethernet_alveo #(
     // Timestamping configuration (port)
     parameter PTP_TS_ENABLE = 0,
     parameter TX_PTP_TS_FIFO_DEPTH = 32,
