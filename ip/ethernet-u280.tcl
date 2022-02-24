@@ -20,6 +20,7 @@ set files [list \
   [file normalize "${g_root_dir}/src/verilog-ethernet/lib/axis/rtl/axis_async_fifo.v"] \
   [file normalize "${g_root_dir}/src/verilog-ethernet/lib/axis/rtl/axis_async_fifo_adapter.v"] \
   [file normalize "${g_root_dir}/src/verilog-ethernet/rtl/lfsr.v"] \
+  [file normalize "${g_root_dir}/src/verilog-ethernet/rtl/ptp_clock_cdc.v"] \
   [file normalize "${g_root_dir}/src/10Gb_ethernet_top.v"] \
   [file normalize "${g_root_dir}/src/ethernet_alveo.v"] \
 ]

@@ -22,7 +22,7 @@ THE SOFTWARE.
 
 */
 
-module ethernet_top #(
+module Ethernet10Gb_top #(
     parameter burst_size = 16,
     parameter dma_word_bits = 32,
     parameter dma_addr_bits = 32,
@@ -183,8 +183,6 @@ assign reset = !reset_sync[2];
 wire clock;
 assign clock = eth_gt_user_clock;
 
-assign 
-
 always @(posedge clock)
     reset_sync <= {reset_sync[1:0], async_resetn};
 
@@ -259,10 +257,25 @@ reg m_axi_rd_err;
 reg m_axi_wr_cyc;
 reg m_axi_wr_err;
 
-wire [15:0] eth0_status,
+wire [15:0] eth0_status;
+wire [15:0] status_vector;
 
+ wire [axis_word_bits-1:0] tx_axis_tdata;
+ wire [axis_word_bits/8-1:0] tx_axis_tkeep;
+ wire tx_axis_tvalid;
+ wire tx_axis_tready;
+ wire tx_axis_tlast;
+ wire tx_axis_tuser;
+ wire [axis_word_bits-1:0] rx_axis_tdata;
+ wire [axis_word_bits/8-1:0] rx_axis_tkeep;
+ wire rx_axis_tvalid;
+ wire rx_axis_tready;
+ wire rx_axis_tlast;
+ wire rx_axis_tuser;
 
-assign int_status = { mdio_phy_int, mdio_txrx_int, tx_int, rx_int, eth0_status };
+assign status_vector = eth0_status;
+
+assign int_status = { mdio_phy_int, mdio_txrx_int, tx_int, rx_int, status_vector };
 assign interrupt = (int_enable & int_status) != 0;
 
 always @(posedge clock) begin
@@ -670,7 +683,7 @@ end
 
 // ------ FPGA Physical Layer -- tx_axis_tuser
 
-ethernet_alveo ethernet_u280_i (
+ethernet_alveo ethernet_alveo_i (
 
     .clock(init_clk),
     .clock_ok(locked),

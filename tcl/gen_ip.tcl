@@ -34,4 +34,6 @@ set_property type LOGO [ipx::get_files "misc/BSC-Logo.png" -of_objects [ipx::get
 ipx::check_integrity ${ip_core}
 ipx::save_core ${ip_core}
 
+update_ip_catalog -rebuild -scan_changes
+
 puts "IP succesfully packaged " 

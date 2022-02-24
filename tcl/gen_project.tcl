@@ -65,10 +65,10 @@ save_bd_design
 set g_top_name ${g_project_name}_top
 
 set top_module "$root_dir/src/${g_top_name}.$g_rtl_ext"
-set src_files [glob ${root_dir}/src/*]
-set ip_files [glob -nocomplain ${root_dir}/ip/*/*.xci]
-add_files ${src_files}
-#add_files $top_module
+#set src_files [glob ${root_dir}/src/*]
+#set ip_files [glob -nocomplain ${root_dir}/ip/*/*.xci]
+#add_files ${src_files}
+add_files $top_module
 add_files -quiet ${ip_files}
 
 # Add Constraint files to project
