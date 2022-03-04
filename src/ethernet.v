@@ -22,31 +22,25 @@ THE SOFTWARE.
 
 */
 
-module Ethernet10Gb_top #(
+module ethernet #(
     parameter burst_size = 16,
-    parameter dma_word_bits = 32,
-    parameter dma_addr_bits = 32,
+    parameter dma_word_bits = 64,
+    parameter dma_addr_bits = 64,
     parameter axis_word_bits = 8,
-    parameter enable_mdio = 0
+    parameter enable_mdio = 1
 ) (
     input wire async_resetn,
 
     (* X_INTERFACE_INFO = "xilinx.com:signal:reset:1.0 reset RST" *)
     (* X_INTERFACE_PARAMETER = "POLARITY ACTIVE_HIGH" *)
     output wire reset,
-	
-	(* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 init_clk CLK" *)
-    (* X_INTERFACE_PARAMETER = "FREQ_HZ 125000000" *)
-    input wire init_clk,
 
-    input wire locked,
-
-    (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 eth_gt_user_clock CLK" *)
-    (* X_INTERFACE_PARAMETER = "ASSOCIATED_BUSIF M_AXI:S_AXI_LITE" *)
-    output wire eth_gt_user_clock,
+    (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 clock CLK" *)
+    (* X_INTERFACE_PARAMETER = "ASSOCIATED_BUSIF M_AXI:S_AXI_LITE:TX_AXIS:RX_AXIS" *)
+    input wire clock,
 
     (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI_LITE AWADDR" *)
-    (* X_INTERFACE_PARAMETER = "CLK_DOMAIN eth_gt_user_clock, ID_WIDTH 0, PROTOCOL AXI4LITE, DATA_WIDTH 32" *)
+    (* X_INTERFACE_PARAMETER = "CLK_DOMAIN clock, ID_WIDTH 0, PROTOCOL AXI4LITE, DATA_WIDTH 32" *)
     input wire [15:0] s_axi_awaddr,
     (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI_LITE AWVALID" *)
     input wire s_axi_awvalid,
@@ -80,7 +74,7 @@ module Ethernet10Gb_top #(
     input wire s_axi_rready,
 
     (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 M_AXI AWADDR" *)
-    (* X_INTERFACE_PARAMETER = "CLK_DOMAIN eth_gt_user_clock, ID_WIDTH 0, PROTOCOL AXI4" *)
+    (* X_INTERFACE_PARAMETER = "CLK_DOMAIN clock, ID_WIDTH 0, PROTOCOL AXI4" *)
     output reg  [dma_addr_bits-1:0] m_axi_awaddr,
     (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 M_AXI AWLEN" *)
     output reg  [7:0] m_axi_awlen,
@@ -126,18 +120,10 @@ module Ethernet10Gb_top #(
     (* X_INTERFACE_INFO = "xilinx.com:signal:interrupt:1.0 interrupt INTERRUPT" *)
     (* X_INTERFACE_PARAMETER = "SENSITIVITY LEVEL_HIGH" *)
     output wire interrupt,
-	
-	/* QSFP28 #0 */
-    output wire qsfp_tx1_p,
-    output wire qsfp_tx1_n,
-    input  wire qsfp_rx1_p,
-    input  wire qsfp_rx1_n,
-    input  wire qsfp_mgt_refclk_1_p,
-    input  wire qsfp_mgt_refclk_1_n,
-    output wire qsfp_refclk_oe_b,
-    output wire qsfp_refclk_fs,
 
- /*    (* X_INTERFACE_INFO = "xilinx.com:interface:axis:1.0 TX_AXIS TDATA" *)
+    input wire [15:0]status_vector,
+
+    (* X_INTERFACE_INFO = "xilinx.com:interface:axis:1.0 TX_AXIS TDATA" *)
     (* X_INTERFACE_PARAMETER = "CLK_DOMAIN clock" *)
     output wire [axis_word_bits-1:0] tx_axis_tdata,
     (* X_INTERFACE_INFO = "xilinx.com:interface:axis:1.0 TX_AXIS TKEEP" *)
@@ -163,10 +149,9 @@ module Ethernet10Gb_top #(
     (* X_INTERFACE_INFO = "xilinx.com:interface:axis:1.0 RX_AXIS TLAST" *)
     input wire rx_axis_tlast,
     (* X_INTERFACE_INFO = "xilinx.com:interface:axis:1.0 RX_AXIS TUSER" *)
-    input wire rx_axis_tuser, */
+    input wire rx_axis_tuser,
 
     (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 mdio_clock CLK" *)
-    (* X_INTERFACE_PARAMETER = "FREQ_HZ 2500000" *)
     output reg mdio_clock,  // PHY MII Management clock
     inout wire mdio_data,   // PHY MII Management data
     output wire mdio_reset, // PHY reset
@@ -179,9 +164,6 @@ module Ethernet10Gb_top #(
 (* ASYNC_REG="true" *)
 reg  [2:0] reset_sync;
 assign reset = !reset_sync[2];
-
-wire clock;
-assign clock = eth_gt_user_clock;
 
 always @(posedge clock)
     reset_sync <= {reset_sync[1:0], async_resetn};
@@ -256,24 +238,6 @@ reg m_axi_rd_cyc;
 reg m_axi_rd_err;
 reg m_axi_wr_cyc;
 reg m_axi_wr_err;
-
-wire [15:0] eth0_status;
-wire [15:0] status_vector;
-
- wire [axis_word_bits-1:0] tx_axis_tdata;
- wire [axis_word_bits/8-1:0] tx_axis_tkeep;
- wire tx_axis_tvalid;
- wire tx_axis_tready;
- wire tx_axis_tlast;
- wire tx_axis_tuser;
- wire [axis_word_bits-1:0] rx_axis_tdata;
- wire [axis_word_bits/8-1:0] rx_axis_tkeep;
- wire rx_axis_tvalid;
- wire rx_axis_tready;
- wire rx_axis_tlast;
- wire rx_axis_tuser;
-
-assign status_vector = eth0_status;
 
 assign int_status = { mdio_phy_int, mdio_txrx_int, tx_int, rx_int, status_vector };
 assign interrupt = (int_enable & int_status) != 0;
@@ -680,43 +644,6 @@ always @(posedge clock) begin
         end
     end
 end
-
-// ------ FPGA Physical Layer -- tx_axis_tuser
-
-ethernet_alveo ethernet_alveo_i (
-
-    .clock(init_clk),
-    .clock_ok(locked),
-
-    .eth_gt_user_clock(eth_gt_user_clock),
-    .eth0_status(eth0_status),
-
-    /* ETH0 AXIS */
-    .eth0_tx_axis_tdata(tx_axis_tdata),
-    .eth0_tx_axis_tkeep(tx_axis_tkeep),
-    .eth0_tx_axis_tvalid(tx_axis_tvalid),
-    .eth0_tx_axis_tready(tx_axis_tready),
-    .eth0_tx_axis_tlast(tx_axis_tlast),
-    .eth0_tx_axis_tuser(tx_axis_tuser),
-    .eth0_rx_axis_tdata(rx_axis_tdata),
-    .eth0_rx_axis_tkeep(rx_axis_tkeep),
-    .eth0_rx_axis_tvalid(rx_axis_tvalid),
-    .eth0_rx_axis_tready(rx_axis_tready),
-    .eth0_rx_axis_tlast(rx_axis_tlast),
-    .eth0_rx_axis_tuser(rx_axis_tuser),
-
-    /* QSFP28 #0 */
-    .qsfp0_tx1_p(qsfp_tx1_p),
-    .qsfp0_tx1_n(qsfp_tx1_n),
-    .qsfp0_rx1_p(qsfp_rx1_p),
-    .qsfp0_rx1_n(qsfp_rx1_n),
-    .qsfp0_mgt_refclk_1_p(qsfp_mgt_refclk_1_p),
-    .qsfp0_mgt_refclk_1_n(qsfp_mgt_refclk_1_n),
-    .qsfp0_refclk_oe_b(qsfp_refclk_oe_b),
-    .qsfp0_refclk_fs(qsfp_refclk_fs)
-
-);
-
 
 // ------ PHY MDIO Interface
 
