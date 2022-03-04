@@ -127,8 +127,11 @@ wire tx_axis_tuser;
 wire tx_axis_tvalid;
 
 
-
-
+wire mdio_clock;
+wire mdio_data;
+wire mdio_reset;
+wire mdio_int;
+wire reset_i;
 ethernet  #(.dma_addr_bits(dma_addr_bits),.dma_word_bits(dma_word_bits)) ethernet_i
 	(.m_axi_araddr(m_axi_araddr),
 	.m_axi_arlen(m_axi_arlen),
@@ -182,11 +185,11 @@ ethernet  #(.dma_addr_bits(dma_addr_bits),.dma_word_bits(dma_word_bits)) etherne
 	.async_resetn(async_resetn),
 	.clock(gt_clock),
 	.interrupt(interrupt),
-	.mdio_clock(0),//unconnected
-	.mdio_data(0),//unconnected
-	.mdio_int(0),//unconnected
-	.mdio_reset(0),//Output unconnected
-	.reset(0),//we don't need to forward-out the reset
+	.mdio_clock(mdio_clock),//unconnected
+	.mdio_data(mdio_data),//unconnected
+	.mdio_int(mdio_int),//unconnected
+	.mdio_reset(mdio_reset),//Output unconnected
+	.reset(reset_i),//we don't need to forward-out the reset
 	.status_vector(status));
 
 
