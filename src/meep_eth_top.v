@@ -132,7 +132,11 @@ wire mdio_data;
 wire mdio_reset;
 wire mdio_int;
 wire reset_i;
-ethernet  #(.dma_addr_bits(dma_addr_bits),.dma_word_bits(dma_word_bits)) ethernet_i
+
+assign mdio_int = 0;
+
+
+ethernet  #(.dma_addr_bits(dma_addr_bits),.dma_word_bits(dma_word_bits),.enable_mdio(0)) ethernet_i
 	(.m_axi_araddr(m_axi_araddr),
 	.m_axi_arlen(m_axi_arlen),
 	.m_axi_arready(m_axi_arready),
