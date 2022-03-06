@@ -44,25 +44,13 @@ set ip_dir_list [list \
 	
 set_property  ip_repo_paths  $ip_dir_list [current_project]
 
-if { $g_useBlockDesign eq "Y" } {
-create_bd_design -dir $root_dir/bd ${design_name}
-update_ip_catalog -rebuild
-source ${root_dir}/tcl/gen_bd.tcl
-create_root_design ""
-validate_bd_design
-save_bd_design
-}
-
-# source $root_dir/ip/aurora6466b.tcl
-# source $root_dir/ip/axi_dma.tcl
-# source $root_dir/ip/axi_subset_converter.tcl
 
 ####################################################
 # MAIN FLOW
 ####################################################
-set g_top_name ${g_project_name}_top
+#set g_top_name ${g_project_name}_top
 
-set top_module "/project/10gb_ethernet/src/meep_eth_top.v"
+set top_module "$root_dir/src/meep_eth_top.v"
 #set src_files [glob ${root_dir}/src/*]
 #set ip_files [glob -nocomplain ${root_dir}/ip/*/*.xci]
 #add_files ${src_files}

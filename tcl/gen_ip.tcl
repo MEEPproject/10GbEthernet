@@ -4,14 +4,16 @@ source $root_dir/tcl/ip_properties.tcl
 set ip_properties [ list \
     vendor "meep-project.eu" \
     library "MEEP" \
-    name "MEEP_${g_design_name}" \
+    name "MEEP_10Gb_Ethernet" \
     version "$g_ip_version" \
     taxonomy "/MEEP_IP" \
-    display_name "MEEP QSFP IP" \
-    description "${g_ip_description}" \
-    vendor_display_name "MEEP Project" \
+    display_name "MEEP 10Gb Ethernet" \
+    description "10Gb Ethernet standalone design" \
+    core_revision 1 \
+    vendor_display_name "bsc.es" \
     company_url "https://meep-project.eu/" \
     ]
+
 
 set family_lifecycle { \
   virtexuplusHBM Production \
