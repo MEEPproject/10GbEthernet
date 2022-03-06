@@ -8,7 +8,7 @@ set ip_properties [ list \
     version "$g_ip_version" \
     taxonomy "/MEEP_IP" \
     display_name "MEEP 10Gb Ethernet" \
-    description "10Gb Ethernet standalone design" \
+    description "$g_ip_description" \
     core_revision 1 \
     vendor_display_name "bsc.es" \
     company_url "https://meep-project.eu/" \
