@@ -8,9 +8,9 @@ module Ethernet_top #(
 ) (
     input wire async_resetn,
 
-    (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 working_clock CLK" *)
-    input wire working_clock,
-    input wire working_clock_ok,
+    (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 init_clk CLK" *)
+    input wire init_clk,
+    input wire locked,
 
     (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 gt_clock CLK" *)
     (* X_INTERFACE_PARAMETER = "ASSOCIATED_BUSIF M_AXI:S_AXI_LITE" *)
@@ -98,15 +98,15 @@ module Ethernet_top #(
     (* X_INTERFACE_PARAMETER = "SENSITIVITY LEVEL_HIGH" *)
     output wire interrupt,
 
-	/* QSFP28 #1 */
-    output wire       qsfp_tx1_p,
-    output wire       qsfp_tx1_n,
-    input  wire       qsfp_rx1_p,
-    input  wire       qsfp_rx1_n,
-    input  wire       qsfp_mgt_refclk_1_p,
-    input  wire       qsfp_mgt_refclk_1_n,
-    output wire       qsfp_refclk_oe_b,
-    output wire       qsfp_refclk_fs
+	/* QSFP28 */
+     (* X_INTERFACE_INFO = "xilinx.com:interface:gt:1.0 qsfp_1x GTX_P" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME qsfp_1x, CAN_DEBUG false" *) output qsfp_1x_gtx_p,
+     (* X_INTERFACE_INFO = "xilinx.com:interface:gt:1.0 qsfp_1x GTX_N" *) output qsfp_1x_gtx_n,
+     (* X_INTERFACE_INFO = "xilinx.com:interface:gt:1.0 qsfp_1x GRX_P" *) input  qsfp_1x_grx_p,
+     (* X_INTERFACE_INFO = "xilinx.com:interface:gt:1.0 qsfp_4x GRX_N" *) input  qsfp_1x_grx_n,
+     (* X_INTERFACE_INFO = "xilinx.com:interface:diff_clock:1.0 qsfp_refck CLK_N" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME qsfp_refck, CAN_DEBUG false " *) input qsfp_refck_clk_n;
+     (* X_INTERFACE_INFO = "xilinx.com:interface:diff_clock:1.0 qsfp_refck CLK_P" *)input qsfp_refclk_clk_p,
+    output wire       qsfp_oe_b,
+    output wire       qsfp_fs
 
 );
 
@@ -200,9 +200,9 @@ ethernet  #(.dma_addr_bits(dma_addr_bits),.dma_word_bits(dma_word_bits),.enable_
 
 
 
-ethernet_alveo #(.qsfp_number(qsfp_number)) ethernet_u280_i1(
-    .clock_ok(working_clock_ok),
-    .clock(working_clock),
+ethernet_alveo #(.qsfp_number(qsfp_number)) ethernet_alveo_i(
+    .clock_ok(locked),
+    .clock(init_clk),
 
     .eth_gt_user_clock(gt_clock),
 
@@ -222,14 +222,14 @@ ethernet_alveo #(.qsfp_number(qsfp_number)) ethernet_u280_i1(
     .eth0_tx_axis_tvalid(tx_axis_tvalid),
 
     /* QSFP28 */
-    .qsfp0_tx1_p(qsfp_tx1_p),
-    .qsfp0_tx1_n(qsfp_tx1_n),
-    .qsfp0_rx1_p(qsfp_rx1_p),
-    .qsfp0_rx1_n(qsfp_rx1_n),
-    .qsfp0_mgt_refclk_1_p(qsfp_mgt_refclk_1_p),
-    .qsfp0_mgt_refclk_1_n(qsfp_mgt_refclk_1_n),
-    .qsfp0_refclk_oe_b(qsfp_refclk_oe_b),
-    .qsfp0_refclk_fs(qsfp_refclk_fs)
+    .qsfp0_tx1_p(qsfp_1x_gtx_p),
+    .qsfp0_tx1_n(qsfp_1x_gtx_n),
+    .qsfp0_rx1_p(qsfp_1x_grx_p),
+    .qsfp0_rx1_n(qsfp_1x_grx_n),
+    .qsfp0_mgt_refclk_1_p(qsfp_refclk_clk_p),
+    .qsfp0_mgt_refclk_1_n(qsfp_refclk_clk_n),
+    .qsfp0_refclk_oe_b(qsfp_oe_b),
+    .qsfp0_refclk_fs(qsfp_fs)
 );
 
 endmodule
