@@ -20,8 +20,6 @@ if { $::argc > 0 } {
 
 }
 
-file delete -force $projec_dir
-
 
 set root_dir $g_root_dir
 
@@ -31,6 +29,8 @@ set root_dir $g_root_dir
 
 set g_project_name $g_project_name
 set projec_dir $root_dir/project
+# Clean previous project
+file delete -force $projec_dir
 
 set list_projs [get_projects -quiet]
 if { $list_projs eq "" } {
@@ -69,7 +69,7 @@ set top_module "$root_dir/src/${g_top_name}.$g_rtl_ext"
 #set ip_files [glob -nocomplain ${root_dir}/ip/*/*.xci]
 #add_files ${src_files}
 add_files $top_module
-add_files -quiet ${ip_files}
+#add_files -quiet ${ip_files}
 
 # Add Constraint files to project
 # TODO: Add Out Of Context constraints in case it is necessary in the future
