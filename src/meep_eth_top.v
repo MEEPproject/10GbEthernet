@@ -1,13 +1,11 @@
 
 
-module Ethernet_top #(
+module ethernet10Gb #(
     parameter qsfp_number = 0,
     parameter dma_addr_bits = 64,
     parameter dma_word_bits = 64
 
 ) (
-    input wire async_resetn,
-
     (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 init_clk CLK" *)
     input wire init_clk,
     input wire locked,
@@ -102,8 +100,8 @@ module Ethernet_top #(
      (* X_INTERFACE_INFO = "xilinx.com:interface:gt:1.0 qsfp_1x GTX_P" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME qsfp_1x, CAN_DEBUG false" *) output qsfp_1x_gtx_p,
      (* X_INTERFACE_INFO = "xilinx.com:interface:gt:1.0 qsfp_1x GTX_N" *) output qsfp_1x_gtx_n,
      (* X_INTERFACE_INFO = "xilinx.com:interface:gt:1.0 qsfp_1x GRX_P" *) input  qsfp_1x_grx_p,
-     (* X_INTERFACE_INFO = "xilinx.com:interface:gt:1.0 qsfp_4x GRX_N" *) input  qsfp_1x_grx_n,
-     (* X_INTERFACE_INFO = "xilinx.com:interface:diff_clock:1.0 qsfp_refck CLK_N" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME qsfp_refck, CAN_DEBUG false " *) input qsfp_refck_clk_n;
+     (* X_INTERFACE_INFO = "xilinx.com:interface:gt:1.0 qsfp_1x GRX_N" *) input  qsfp_1x_grx_n,
+     (* X_INTERFACE_INFO = "xilinx.com:interface:diff_clock:1.0 qsfp_refck CLK_N" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME qsfp_refck, CAN_DEBUG false " *) input qsfp_refck_clk_n,
      (* X_INTERFACE_INFO = "xilinx.com:interface:diff_clock:1.0 qsfp_refck CLK_P" *)input qsfp_refclk_clk_p,
     output wire       qsfp_oe_b,
     output wire       qsfp_fs
@@ -186,7 +184,7 @@ ethernet  #(.dma_addr_bits(dma_addr_bits),.dma_word_bits(dma_word_bits),.enable_
 	.tx_axis_tready(tx_axis_tready),
 	.tx_axis_tuser(tx_axis_tuser),
 	.tx_axis_tvalid(tx_axis_tvalid),
-	.async_resetn(async_resetn),
+	.async_resetn(locked),
 	.clock(gt_clock),
 	.interrupt(interrupt),
 	.mdio_clock(mdio_clock),//unconnected
@@ -195,8 +193,6 @@ ethernet  #(.dma_addr_bits(dma_addr_bits),.dma_word_bits(dma_word_bits),.enable_
 	.mdio_reset(mdio_reset),//Output unconnected
 	.reset(reset_i),//we don't need to forward-out the reset
 	.status_vector(status));
-
-
 
 
 
