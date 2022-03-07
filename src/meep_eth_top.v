@@ -11,41 +11,42 @@ module ethernet10Gb #(
     input wire locked,
 
     (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 gt_clock CLK" *)
-    (* X_INTERFACE_PARAMETER = "ASSOCIATED_BUSIF M_AXI:S_AXI_LITE" *)
+    (* X_INTERFACE_PARAMETER = "ASSOCIATED_BUSIF M_AXI:s_axi_lite" *)
 	output wire        gt_clock,
+	output wire	   gt_rstn,
 
-    (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI_LITE AWADDR" *)
+    (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi_lite AWADDR" *)
     (* X_INTERFACE_PARAMETER = "CLK_DOMAIN gt_clock, ID_WIDTH 0, PROTOCOL AXI4LITE, DATA_WIDTH 32" *)
     input wire [15:0] s_axi_awaddr,
-    (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI_LITE AWVALID" *)
+    (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi_lite AWVALID" *)
     input wire s_axi_awvalid,
-    (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI_LITE AWREADY" *)
+    (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi_lite AWREADY" *)
     output wire s_axi_awready,
-    (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI_LITE WDATA" *)
+    (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi_lite WDATA" *)
     input wire [31:0] s_axi_wdata,
-    (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI_LITE WVALID" *)
+    (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi_lite WVALID" *)
     input wire s_axi_wvalid,
-    (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI_LITE WREADY" *)
+    (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi_lite WREADY" *)
     output wire s_axi_wready,
-    (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI_LITE BRESP" *)
+    (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi_lite BRESP" *)
     output wire [1:0] s_axi_bresp,
-    (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI_LITE BVALID" *)
+    (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi_lite BVALID" *)
     output wire s_axi_bvalid,
-    (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI_LITE BREADY" *)
+    (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi_lite BREADY" *)
     input wire s_axi_bready,
-    (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI_LITE ARADDR" *)
+    (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi_lite ARADDR" *)
     input wire [15:0] s_axi_araddr,
-    (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI_LITE ARVALID" *)
+    (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi_lite ARVALID" *)
     input wire s_axi_arvalid,
-    (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI_LITE ARREADY" *)
+    (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi_lite ARREADY" *)
     output wire s_axi_arready,
-    (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI_LITE RDATA" *)
+    (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi_lite RDATA" *)
     output wire [31:0] s_axi_rdata,
-    (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI_LITE RRESP" *)
+    (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi_lite RRESP" *)
     output wire [1:0] s_axi_rresp,
-    (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI_LITE RVALID" *)
+    (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi_lite RVALID" *)
     output wire s_axi_rvalid,
-    (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI_LITE RREADY" *)
+    (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi_lite RREADY" *)
     input wire s_axi_rready,
 
     (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 M_AXI AWADDR" *)
@@ -101,8 +102,8 @@ module ethernet10Gb #(
      (* X_INTERFACE_INFO = "xilinx.com:interface:gt:1.0 qsfp_1x GTX_N" *) output qsfp_1x_gtx_n,
      (* X_INTERFACE_INFO = "xilinx.com:interface:gt:1.0 qsfp_1x GRX_P" *) input  qsfp_1x_grx_p,
      (* X_INTERFACE_INFO = "xilinx.com:interface:gt:1.0 qsfp_1x GRX_N" *) input  qsfp_1x_grx_n,
-     (* X_INTERFACE_INFO = "xilinx.com:interface:diff_clock:1.0 qsfp_refck CLK_N" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME qsfp_refck, CAN_DEBUG false " *) input qsfp_refck_clk_n,
-     (* X_INTERFACE_INFO = "xilinx.com:interface:diff_clock:1.0 qsfp_refck CLK_P" *)input qsfp_refclk_clk_p,
+     (* X_INTERFACE_INFO = "xilinx.com:interface:diff_clock:1.0 qsfp_refclk CLK_N" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME qsfp_refclk, CAN_DEBUG false " *) input qsfp_refclk_clk_n,
+     (* X_INTERFACE_INFO = "xilinx.com:interface:diff_clock:1.0 qsfp_refclk CLK_P" *)input qsfp_refclk_clk_p,
     output wire       qsfp_oe_b,
     output wire       qsfp_fs
 
@@ -132,6 +133,8 @@ wire mdio_int;
 wire reset_i;
 
 assign mdio_int = 0;
+
+assign gt_rstn = ~reset_i;
 
 
 ethernet  #(.dma_addr_bits(dma_addr_bits),.dma_word_bits(dma_word_bits),.enable_mdio(0)) ethernet_i
