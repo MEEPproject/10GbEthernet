@@ -7,7 +7,7 @@ set ip_properties [ list \
     name "MEEP_10Gb_Ethernet" \
     version "$g_ip_version" \
     taxonomy "/MEEP_IP" \
-    display_name "MEEP 10Gb Ethernet" \
+    display_name "$g_display_name" \
     description "$g_ip_description" \
     core_revision 1 \
     vendor_display_name "bsc.es" \
