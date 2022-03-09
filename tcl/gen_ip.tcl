@@ -4,7 +4,7 @@ source $root_dir/tcl/ip_properties.tcl
 set ip_properties [ list \
     vendor "meep-project.eu" \
     library "MEEP" \
-    name "MEEP_10Gb_Ethernet" \
+    name "MEEP_10Gb_Ethernet_${g_qsfp_port}" \
     version "$g_ip_version" \
     taxonomy "/MEEP_IP" \
     display_name "$g_display_name" \
@@ -19,9 +19,10 @@ set family_lifecycle { \
   virtexuplusHBM Production \
 }
 
+file mkdir ${root_dir}/${g_qsfp_port}
 
 # Package project and set properties
-ipx::package_project
+ipx::package_project -root_dir ${root_dir}/${g_qsfp_port} -import_files
 set ip_core [ipx::current_core]
 set_property -dict ${ip_properties} ${ip_core}
 set_property SUPPORTED_FAMILIES ${family_lifecycle} ${ip_core}
