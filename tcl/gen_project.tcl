@@ -63,10 +63,7 @@ add_files $top_module
 
 # Add Constraint files to project
 # TODO: Add Out Of Context constraints in case it is necessary in the future
-#add_files -fileset [get_filesets constrs_1] "$root_dir/xdc/${g_project_name}_pinout.xdc"
-#add_files -fileset [get_filesets constrs_1] "$root_dir/xdc/${g_project_name}_timing.xdc"
-#add_files -fileset [get_filesets constrs_1] "$root_dir/xdc/${g_project_name}_ila.xdc"
-#add_files -fileset [get_filesets constrs_1] "$root_dir/xdc/${g_project_name}_alveo280.xdc"
+add_files -fileset [get_filesets constrs_1] "$root_dir/xdc/${g_board_part}/ethernet_${g_qsfp_port}.xdc"
 set_property target_language VHDL [current_project]
 puts "Project generation ended successfully"
 #source $root_dir/tcl/gen_runs.tcl

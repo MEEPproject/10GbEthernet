@@ -34,8 +34,9 @@ set files [list \
   [file normalize ${g_root_dir}/src/verilog-ethernet/syn/vivado/eth_mac_fifo.tcl] \
 ]
 
-# QSFP Port 0
-if { $g_qsfp_port == "qsfp1" } {
+# https://www.xilinx.com/support/documentation/user_guides/ug575-ultrascale-pkg-pinout.pdf
+# QSFP Port 0, GTY Quad 134
+if { $g_qsfp_port == "qsfp0" } {
 create_ip -name gtwizard_ultrascale -vendor xilinx.com -library ip -module_name gtwizard_ultrascale_0
 
 set_property -dict [list CONFIG.preset {GTY-10GBASE-R}] [get_ips gtwizard_ultrascale_0]
@@ -59,7 +60,7 @@ set_property -dict [list \
 
 } else { 
 
-# QSFP Port 1
+# QSFP Port 1, Quad 135
 create_ip -name gtwizard_ultrascale -vendor xilinx.com -library ip -module_name gtwizard_ultrascale_1
 
 set_property -dict [list CONFIG.preset {GTY-10GBASE-R}] [get_ips gtwizard_ultrascale_1]
