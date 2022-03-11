@@ -7,7 +7,7 @@ set ip_properties [ list \
     name "MEEP_10Gb_Ethernet_${g_qsfp_port}" \
     version "$g_ip_version" \
     taxonomy "/MEEP_IP" \
-    display_name "$g_display_name" \
+    display_name "MEEP 10Gb Ethernet ${g_qsfp_port}" \
     description "$g_ip_description" \
     core_revision 1 \
     vendor_display_name "bsc.es" \
@@ -29,8 +29,8 @@ set_property SUPPORTED_FAMILIES ${family_lifecycle} ${ip_core}
 
 
 ## Relative path to IP root directory
-ipx::create_xgui_files ${ip_core} -logo_file "misc/BSC-Logo.png"
-set_property type LOGO [ipx::get_files "misc/BSC-Logo.png" -of_objects [ipx::get_file_groups xilinx_utilityxitfiles -of_objects [ipx::current_core]]]
+ipx::create_xgui_files ${ip_core} -logo_file "${root_dir}/misc/BSC-Logo.png"
+set_property type LOGO [ipx::get_files "${root_dir}/misc/BSC-Logo.png" -of_objects [ipx::get_file_groups xilinx_utilityxitfiles -of_objects [ipx::current_core]]]
 
 
 # Save IP and close project

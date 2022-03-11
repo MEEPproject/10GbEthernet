@@ -7,12 +7,12 @@ FPGA_BOARD  ?= u280
 QSFP_PORT   ?= qsfp0
 
 
-#Generate the Aurora DMA IP
+#Generate the Ethernet IP
 
 generate_ip:
-	echo "Generate 10Gb Ethernt IP for the Alveo $(FPGA_BOARD) and the port $(QSFP_PORT)"
+	@(echo "Generate 10Gb Ethernt IP for the Alveo $(FPGA_BOARD) and the port $(QSFP_PORT)")
 	$(VIVADO_XLNX) $(VIVADO_OPT)  ./tcl/gen_project.tcl -tclargs $(FPGA_BOARD) $(QSFP_PORT)
-	echo "IP created under folder $(QSFP_PORT)"
+	@(echo "IP created under folder $(QSFP_PORT)")
 
 
 clean:
