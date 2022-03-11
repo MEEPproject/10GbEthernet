@@ -58,7 +58,7 @@ set top_module "$root_dir/src/meep_eth_top.v"
 #set src_files [glob ${root_dir}/src/*]
 #set ip_files [glob -nocomplain ${root_dir}/ip/*/*.xci]
 #add_files ${src_files}
-add_files $top_module
+#add_files $top_module
 #add_files -quiet ${ip_files}
 
 # Add Constraint files to project
