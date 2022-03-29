@@ -131,7 +131,7 @@ wire mdio_data;
 wire mdio_reset;
 wire mdio_int;
 wire reset_i;
-wire interrupt_i;
+(* dont_touch = "true" *) reg interrupt_i;
 
 assign mdio_int = 0;
 
