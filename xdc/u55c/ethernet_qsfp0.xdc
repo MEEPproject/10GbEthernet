@@ -12,3 +12,6 @@ set_property -dict {LOC AD43 } [get_ports qsfp_refclk_clk_n] ;
 # 161.1328125 MHz MGT reference clock (from SI5394B)
 create_clock -period 6.206 -name qsfp_refclk [get_ports qsfp_refclk_clk_p]
 
+
+set_false_path -from [get_pins -hierarchical -filter {NAME =~ interrupt*/C}]
+
