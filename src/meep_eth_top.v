@@ -95,7 +95,7 @@ module ethernet10Gb #(
 
     (* X_INTERFACE_INFO = "xilinx.com:signal:interrupt:1.0 interrupt INTERRUPT" *)
     (* X_INTERFACE_PARAMETER = "SENSITIVITY LEVEL_HIGH" *)
-    output reg interrupt,
+    output wire interrupt,
 
 	/* QSFP28 */
      (* X_INTERFACE_INFO = "xilinx.com:interface:gt:1.0 qsfp_1x GTX_P" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME qsfp_1x, CAN_DEBUG false" *) output qsfp_1x_gtx_p,
@@ -131,15 +131,19 @@ wire mdio_data;
 wire mdio_reset;
 wire mdio_int;
 wire reset_i;
-(* dont_touch = "true" *) reg interrupt_i;
+wire interrupt_int;
+
+(* dont_touch = "true" *) reg interrupt_o;
 
 assign mdio_int = 0;
 
 assign gt_rstn = ~reset_i;
 
 always @(posedge gt_clock) begin
-    interrupt <= interrupt_i;
+    interrupt_o <= interrupt_int;
 end
+
+assign interrupt = interrupt_o;
 
 ethernet  #(.dma_addr_bits(dma_addr_bits),.dma_word_bits(dma_word_bits),.enable_mdio(0)) ethernet_i
 	(.m_axi_araddr(m_axi_araddr),
@@ -193,7 +197,7 @@ ethernet  #(.dma_addr_bits(dma_addr_bits),.dma_word_bits(dma_word_bits),.enable_
 	.tx_axis_tvalid(tx_axis_tvalid),
 	.async_resetn(locked),
 	.clock(gt_clock),
-	.interrupt(interrupt_i),
+	.interrupt(interrupt_int),
 	.mdio_clock(mdio_clock),//unconnected
 	.mdio_data(mdio_data),//unconnected
 	.mdio_int(mdio_int),//unconnected
