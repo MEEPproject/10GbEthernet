@@ -23,5 +23,5 @@ set_false_path -to [get_ports {qsfp_oe_b qsfp_fs}]
 set_output_delay 0 [get_ports {qsfp_oe_b qsfp_fs}]
 
 
-set_false_path -from [get_pins -hierarchical -filter {NAME =~ interrupt*/C}]
+#set_false_path -from [get_pins -hierarchical -filter {NAME =~ interrupt*/C}]
 
