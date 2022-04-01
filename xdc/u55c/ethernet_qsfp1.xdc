@@ -14,10 +14,10 @@ create_clock -period 6.206 -name qsfp_refclk [get_ports qsfp_refclk_clk_p]
 
 #set_false_path -from [get_pins -hierarchical -filter {NAME =~ interrupt*/C}]
 
-set_property -dict {LOC BN31 IOSTANDARD LVCMOS18} [get_ports qsfp_oe_b]
-set_property -dict {LOC BP31 IOSTANDARD LVCMOS18} [get_ports qsfp_fs]
+#set_property -dict {LOC BN31 IOSTANDARD LVCMOS18} [get_ports qsfp1_oe_b]
+#set_property -dict {LOC BP31 IOSTANDARD LVCMOS18} [get_ports qsfp1_fs]
 
-set_false_path -to [get_ports {qsfp_oe_b qsfp_fs}]
-set_output_delay 0 [get_ports {qsfp_oe_b qsfp_fs}]
+#set_false_path -to [get_ports {qsfp1_oe_b qsfp1_fs}]
+#set_output_delay 0 [get_ports {qsfp1_oe_b qsfp1_fs}]
 
 

@@ -17,9 +17,10 @@ create_clock -period 6.206 -name qsfp_refclk [get_ports qsfp_refclk_clk_p]
 # Following pin constraints are dummy. OE and FS signal outpus doesn't exist on U55C,
 # but we create connections to unused pins to keep compatibility with u280
 
-set_property -dict {LOC BL30 IOSTANDARD LVCMOS18} [get_ports qsfp_oe_b]
-set_property -dict {LOC BN30 IOSTANDARD LVCMOS18} [get_ports qsfp_fs]
 
-set_false_path -to [get_ports {qsfp_oe_b qsfp_fs}]
-set_output_delay 0 [get_ports {qsfp_oe_b qsfp_fs}]
+#set_property -dict {LOC BL30 IOSTANDARD LVCMOS18} [get_ports qsfp0_oe_b]
+#set_property -dict {LOC BN30 IOSTANDARD LVCMOS18} [get_ports qsfp0_fs]
+
+#set_false_path -to [get_ports {qsfp0_oe_b qsfp0_fs}]
+#set_output_delay 0 [get_ports {qsfp0_oe_b qsfp0_fs}]
 

@@ -15,12 +15,12 @@ set_property -dict {LOC G49 } [get_ports qsfp_1x_gtx_n] ; # MGTYTXN0_135 GTYE4_C
 set_property -dict {LOC M42 } [get_ports qsfp_refclk_clk_p] ; # MGTREFCLK1P_135 from SI546
 set_property -dict {LOC M43 } [get_ports qsfp_refclk_clk_n] ; # MGTREFCLK1N_135 from SI546
 
-set_property -dict {LOC H30 IOSTANDARD LVCMOS18} [get_ports qsfp_oe_b]
-set_property -dict {LOC G33 IOSTANDARD LVCMOS18} [get_ports qsfp_fs]
+set_property -dict {LOC H30 IOSTANDARD LVCMOS18} [get_ports qsfp1_oe_b]
+set_property -dict {LOC G33 IOSTANDARD LVCMOS18} [get_ports qsfp1_fs]
 
 
-set_false_path -to [get_ports {qsfp_oe_b qsfp_fs}]
-set_output_delay 0 [get_ports {qsfp_oe_b qsfp_fs}]
+set_false_path -to [get_ports {qsfp1_oe_b qsfp1_fs}]
+set_output_delay 0 [get_ports {qsfp1_oe_b qsfp1_fs}]
 
 
 #set_false_path -from [get_pins -hierarchical -filter {NAME =~ interrupt*/C}]
